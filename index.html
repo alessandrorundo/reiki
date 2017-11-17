@@ -1,0 +1,181 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery Mobile: Theme Download</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="css/stile.css" rel="stylesheet" type="text/css">
+   
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+	 $(document).ready(function(){
+		  
+	 $("#imposta").click(function(){
+		 $("#impostazioni").css({"height": 'auto'});
+	 });
+						 
+	$("#setup").click(function(){
+	      var counter = 0;
+		  var pass = 0 //numero di passaggi
+	
+	       $("#impostazioni").css({"height": 0});
+	      
+		  var veloce = [];
+		 veloce[0] = '<p>Solo per oggi Non essere arrabbiato</p><p>Solo per oggi Non ti preoccupare</p><p>Solo per oggi Sii grato</p><p>Solo per oggi Lavora con impegno</p><p>Solo per oggi Sii rispettoso verso gli altri</p>';
+		 veloce[1] = "posiziona le mani sulle spalle e trova un unione";
+		 veloce[2] = "Parti con il 7 chakra";
+		 veloce[3] = "Ora vai al 6 chakra";
+		 veloce[4] = "Ora vai al 5 chakra";
+		 veloce[5] = "Ora vai al 4 chakra";
+		 veloce[6] = "Ora vai al 3 chakra";
+		 veloce[7] = "Ora vai al 2 chakra";
+		 veloce[8] = "Ora vai al 1 chakra";
+		 veloce[9] = "Effettua la pulizia dell'aurea";
+		 veloce[10] = "ringrazie, il trattamento è finito";
+		 
+		 var affermazioni = [];
+		 affermazioni[0] = '<p>Solo per oggi Non essere arrabbiato</p><p>Solo per oggi Non ti preoccupare</p><p>Solo per oggi Sii grato</p><p>Solo per oggi Lavora con impegno</p><p>Solo per oggi Sii rispettoso verso gli altri</p>';
+		 affermazioni[1] = "Tu sei un essere speciale";
+		 affermazioni[2] = "Diffondi amore a profusione";
+		 affermazioni[3] = "altra afferamzione";
+		 affermazioni[4] = "io amo per cui vivo";
+         affermazioni[5] = "Siamo energia";
+		 affermazioni[6] = "Grazie per tutto l'amore che ricevo io lo merito";
+		 
+		 var testo = '<p>Solo per oggi Non essere arrabbiato</p><p>Solo per oggi Non ti preoccupare</p><p>Solo per oggi Sii grato</p><p>Solo per oggi Lavora con impegno</p><p>Solo per oggi Sii rispettoso verso gli altri</p>';
+		 //sugerimenti
+		 var helptext = $('#helptext').val();
+		 var tipoTrat = $('#tipoTrat').val();
+		  
+		  $("#testo").html(testo);
+		  
+		//code
+		  //var timeleft = $('#tempo').val(); //fatto in secondi per un test
+	      var timeleft = (($('#tempo').val())*60);//cosi inserisce i minuti e non i secondi
+		  if (!timeleft) {
+			//code
+			timeleft = 3*60;
+		  }
+	      var sound = $('#musica').val();
+		  var song = new Audio("sound/"+sound+".mp3");
+		  song.loop= true;
+		  song.play();
+		  
+			setup();
+	 
+	      
+          //setup();
+	           function convertSecond(s) {
+	      		//converte i secondi in minuti e secondi e li rende nello schermo
+	      		var min = Math.floor(s/60);
+	      		var sec = s % 60;
+	      		return ((min<10)?"0"+min: min) + ':' + ((sec<10)?"0"+sec:sec);
+	      	  }
+	      	  //funcione per il campanello
+	      var ding;
+	      	  function preload() {
+	      		//recupero il campanello
+	      		ding = new Audio("effect/Meditation Bell Sound Effect.mp3");
+	      		
+	      	  }
+	      preload();
+	      	  function setup() {
+	      		//code
+	      		//noCanvas();
+	      		
+	      		var timer = $('#timer');
+	      		timer.html(convertSecond(timeleft - counter));
+	      		
+	      		function timeIT() {
+	      			//la funzione che va ogni secondo
+	      			counter++;
+	      			timer.html(convertSecond(timeleft - counter))
+	      			if (counter == timeleft) {
+	      				//parte il suono
+	      				ding.play();
+	      				counter=0;
+						passaggi();
+	      			}
+	      		}
+				//funzione per stampare a video i suggerimenti
+				function passaggi() {
+					//code
+					pass++;
+					if (helptext == "on") {
+						//code
+						if (tipoTrat == "veloce") {
+							//sugerimenti veloce
+							$("#testo").html(veloce[pass]);
+						}else{
+						    //sugerimenti completto
+						}
+						
+					}else{
+						 //affermazioni positive a caso 
+						 pass = Math.floor(Math.random()*affermazioni.length);
+						 $("#testo").html(affermazioni[pass]);
+					}
+					
+				}
+	      		
+	      		var interval = setInterval(timeIT, 1000);
+	      		$("#stopID").click(function(){
+	      		   clearInterval(interval);
+				   song.loop=false;
+				   song.pause();
+				   pass = 0;
+	      		   })
+	      		
+	      		
+	      		
+	      	  }
+		  
+  		 
+		  })
+        })
+    </script>
+</head>
+<body>
+	 <h1>Reiki Timer</h1>
+	 <div id="impostazioni">
+	      <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">@</span>
+            <input type="text" class="form-control" id="tempo" required placeholder="Inserisci il tempo per posizione (in minuti)" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+		  <div class="form-group">
+             <label for="exampleFormControlSelect1">scegli la canzone</label>
+             <select class="form-control" id="musica">
+               <option>OM SAI RAM</option>
+               <option>Traccia-2</option>
+             </select>
+           </div>
+		  <div class="form-group">
+             <label for="exampleFormControlSelect1">attiva i sugerimenti</label>
+             <select class="form-control" id="helptext">
+               <option value="on">si</option>
+               <option value="off">no</option>
+             </select>
+           </div>
+		  <div class="form-group">
+             <label for="exampleFormControlSelect1">Tipo di trattamento</label>
+             <select class="form-control" id="tipoTrat">
+               <option value="veloce">veloce</option>
+               <option value="completto">completto</option>
+             </select>
+           </div>
+		  
+		  <button id="setup" type="button" class="btn btn-primary">Imposta</button>
+	</div>
+	 
+	 <div id="timer">____</div>
+	 <div id="testo">____</div>
+	 <button id="stopID" type="button" class="btn btn-primary">Stop</button>
+	 <button id="imposta" type="button" class="btn btn-info">Impostazioni</button>
+	  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	
+	 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+</html>
